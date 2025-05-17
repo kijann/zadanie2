@@ -1,8 +1,12 @@
 pipeline {
     agent {
         node {
-            label 'built-in'
+            label 'built-in' 
         }
+    }
+
+    tools {
+        maven 'maven-3.8.6' 
     }
 
     environment {
@@ -53,7 +57,6 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    // Logowanie do DockerHub i wypychanie obrazu
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
