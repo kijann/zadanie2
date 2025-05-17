@@ -1,8 +1,8 @@
 pipeline {
     agent {
-	node {
-           label 'built-in'
-        }	
+        node {
+            label 'built-in'
+        }
     }
 
     environment {
@@ -13,9 +13,9 @@ pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '10')) 
         disableConcurrentBuilds() 
-        timeout(time: 5, unit: 'MINUTES')
+        timeout(time: 5, unit: 'MINUTES') 
     }
-    
+
     stages {
         stage('Prepare Environment') {
             steps {
@@ -23,24 +23,24 @@ pipeline {
                 checkout scm
             }
         }
-        
-            stage('Test Code') {
-                steps {
-                    dir('zadanie2') {
-                        sh 'mvn clean test'
-                    }
-                }
-                
-            
-        stage('Building jar file using maven') {
+
+        stage('Test Code') {
             steps {
                 dir('zadanie2') {
-                    sh 'mvn clean package -DskipTests=true'
+                    sh 'mvn -B clean test'
                 }
             }
         }
-        
-        stage('Build docker image') {
+
+        stage('Build JAR File') {
+            steps {
+                dir('zadanie2') {
+                    sh 'mvn -B clean package -DskipTests'
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
             steps {
                 dir('zadanie2') {
                     script {
@@ -50,26 +50,39 @@ pipeline {
             }
         }
 
-        stage('Push docker image') {
+        stage('Push Docker Image') {
             steps {
-                script{
+                script {
+                    // Logowanie do DockerHub i wypychanie obrazu
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
         }
-        
-        stage ('Build docker service') {
+
+        stage('Deploy Docker Service') {
             steps {
-                sh """
-                    docker-compose -f docker-compose-dev.yml stop zadanie2 || true
-                    docker-compose -f docker-compose-dev.yml rm -f zadanie2 || true
-                    docker-compose -f docker-compose-dev.yml up -d zadanie2
-                """
+                dir('zadanie2') {
+                    sh '''
+                        docker-compose -f docker-compose-dev.yml stop zadanie2 || true
+                        docker-compose -f docker-compose-dev.yml rm -f zadanie2 || true
+                        docker-compose -f docker-compose-dev.yml up -d zadanie2
+                    '''
                 }
             }
-        
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        success {
+            echo 'Pipeline zakończony sukcesem!'
+        }
+        failure {
+            echo 'Pipeline nie powiódł się.'
         }
     }
 }
