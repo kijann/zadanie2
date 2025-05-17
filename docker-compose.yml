@@ -1,0 +1,7 @@
+services:
+  zadanie2:
+    image: zadanie2:latest
+    container_name: zadanie2
+    ports:
+     - "9090:9090"
+    restart: always

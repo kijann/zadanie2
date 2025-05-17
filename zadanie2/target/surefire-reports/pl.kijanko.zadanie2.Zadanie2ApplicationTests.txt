@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: pl.kijanko.zadanie2.Zadanie2ApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.471 s -- in pl.kijanko.zadanie2.Zadanie2ApplicationTests
