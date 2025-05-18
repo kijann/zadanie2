@@ -61,9 +61,8 @@ pipeline {
         stage('Deploy Docker Service') {
             steps {
                     sh '''
-                        docker-compose -f docker-compose.yml stop zadanie2 || true
-                        docker-compose -f docker-compose.yml rm -f zadanie2 || true
-                        docker-compose -f docker-compose.yml up -d zadanie2
+                        docker-compose down || true
+                        docker-compose up -d 
                     '''
             }
         }
