@@ -29,9 +29,6 @@
     <properties>
         <java.version>21</java.version>
     </properties>
-    <build>
-        <finalName>zadanie2</finalName>
-    </build>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -51,6 +48,7 @@
     </dependencies>
 
     <build>
+        <finalName>zadanie2</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
