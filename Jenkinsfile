@@ -5,10 +5,6 @@ pipeline {
         }
     }
 
-    tools {
-        maven 'maven-3.8.6' 
-    }
-
     environment {
         DOCKER_IMAGE_NAME = 'zadanie2'
         DOCKER_IMAGE_TAG = 'latest'
