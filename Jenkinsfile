@@ -42,10 +42,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                dir('zadanie2') {
                     script {
                         docker.build("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}", "-f Dockerfile .")
-                    }
                 }
             }
         }
@@ -62,13 +60,11 @@ pipeline {
 
         stage('Deploy Docker Service') {
             steps {
-                dir('zadanie2') {
                     sh '''
                         docker-compose -f docker-compose-dev.yml stop zadanie2 || true
                         docker-compose -f docker-compose-dev.yml rm -f zadanie2 || true
                         docker-compose -f docker-compose-dev.yml up -d zadanie2
                     '''
-                }
             }
         }
     }
