@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE_NAME = 'zadanie2'
+        DOCKER_IMAGE_NAME = 'kijann/zadanie2'
         DOCKER_IMAGE_TAG = 'latest'
     }
 
