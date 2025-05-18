@@ -7,7 +7,6 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'zadanie2'
-        DOCKER_IMAGE_NAME_DOCKERHUB = 'kijann/zadanie2'
         DOCKER_IMAGE_TAG = 'latest'
     }
 
@@ -53,7 +52,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        docker.image("${DOCKER_IMAGE_NAME_DOCKERHUB}:${DOCKER_IMAGE_TAG}").push()
+                        docker.image("${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}").push()
                     }
                 }
             }
